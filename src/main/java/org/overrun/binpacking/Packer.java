@@ -24,6 +24,8 @@
 
 package org.overrun.binpacking;
 
+import org.overrun.binpacking.internal.PackerNode;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,11 +42,12 @@ public sealed abstract class Packer implements PackerRegionSize permits FixedPac
      * This method mutates the given regions.
      *
      * @param regions the regions.
-     * @param <T>     the type of the userdata.
+     * @param <U>     the type of the userdata.
+     * @param <E>     the type of elements in the list.
      * @return the sorted regions wrapped in List.
      */
     @SafeVarargs
-    public static <T> List<PackerRegion<T>> sort(PackerRegion<T>... regions) {
+    public static <U, E extends PackerRegion<? extends U>> List<E> sort(E... regions) {
         Arrays.sort(regions);
         return List.of(regions);
     }
@@ -55,21 +58,35 @@ public sealed abstract class Packer implements PackerRegionSize permits FixedPac
      * This method mutates the given regions.
      *
      * @param regions the regions.
-     * @param <T>     the type of the userdata.
+     * @param <U>     the type of the userdata.
+     * @param <E>     the type of elements in the list.
      * @return the sorted regions.
      */
-    public static <T> List<PackerRegion<T>> sort(List<PackerRegion<T>> regions) {
+    public static <U, E extends PackerRegion<? extends U>> List<E> sort(List<E> regions) {
         regions.sort(null);
         return regions;
+    }
+
+    PackerNode findNode(PackerNode root, int w, int h) {
+        if (root.used()) {
+            PackerNode node = findNode(root.right(), w, h);
+            if (node != null) {
+                return node;
+            }
+            return findNode(root.down(), w, h);
+        }
+        if (w <= root.width() && h <= root.height()) {
+            return root;
+        }
+        return null;
     }
 
     /**
      * Fits this packer with the given regions.
      *
      * @param regions the regions.
-     * @param <T>     the type of the userdata.
      */
-    public abstract <T> void fit(List<PackerRegion<T>> regions);
+    public abstract void fit(List<? extends PackerRegion<?>> regions);
 
     /**
      * Gets the width of the root node of this packer.

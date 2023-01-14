@@ -74,7 +74,7 @@ public final class FixedPacker extends Packer {
     }
 
     @Override
-    public <T> void fit(List<PackerRegion<T>> regions) {
+    public void fit(List<? extends PackerRegion<?>> regions) {
         PackerNode node;
         for (var region : regions) {
             if ((node = findNode(root, region.width(), region.height())) != null) {
@@ -91,20 +91,6 @@ public final class FixedPacker extends Packer {
     @Override
     public int height() {
         return root.height();
-    }
-
-    private PackerNode findNode(PackerNode root, int w, int h) {
-        if (root.used()) {
-            PackerNode node = findNode(root.right(), w, h);
-            if (node != null) {
-                return node;
-            }
-            return findNode(root.down(), w, h);
-        }
-        if (w <= root.width() && h <= root.height()) {
-            return root;
-        }
-        return null;
     }
 
     private PackerNode splitNode(PackerNode node, int w, int h) {

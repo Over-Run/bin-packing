@@ -38,7 +38,7 @@ import java.util.List;
  * @since 0.1.0
  */
 public final class PackerTest {
-    private static List<PackerRegion<Object>> generateData() {
+    private static List<PackerRegion<?>> generateData() {
         return Packer.sort(
             PackerRegion.sized(100, 300),
             PackerRegion.sized(300, 300),
@@ -47,7 +47,7 @@ public final class PackerTest {
         );
     }
 
-    private static void testFixed(List<PackerRegion<Object>> testData) {
+    private static void testFixed(List<PackerRegion<?>> testData) {
         var packer = new FixedPacker(400, 500);
         packer.fit(testData);
         System.out.println(packer.width() + ", " + packer.height());
@@ -58,7 +58,7 @@ public final class PackerTest {
         );
     }
 
-    private static void testGrowing(List<PackerRegion<Object>> testData) {
+    private static void testGrowing(List<PackerRegion<?>> testData) {
         var packer = new GrowingPacker();
         packer.fit(testData);
         System.out.println(packer.width() + ", " + packer.height());
