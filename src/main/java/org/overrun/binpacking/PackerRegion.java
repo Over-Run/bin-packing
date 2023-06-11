@@ -51,7 +51,7 @@ public interface PackerRegion<T> extends PackerRegionSize, Comparable<PackerRegi
      * @param size the size of the region.
      * @return the region.
      */
-    static PackerRegion<Object> delegate(PackerRegionSize size) {
+    static PackerRegion<?> delegate(PackerRegionSize size) {
         return delegate(size, null);
     }
 
@@ -85,9 +85,11 @@ public interface PackerRegion<T> extends PackerRegionSize, Comparable<PackerRegi
      * Performs the given action if {@link #fit() fit} position is present.
      *
      * @param consumer the action to be performed.
+     * @param <R>      the type of this region.
      */
-    default void ifFitPresent(BiConsumer<PackerRegion<T>, PackerFitPos> consumer) {
-        fit().ifPresent(fit -> consumer.accept(this, fit));
+    @SuppressWarnings("unchecked")
+    default <R extends PackerRegion<T>> void ifFitPresent(BiConsumer<R, PackerFitPos> consumer) {
+        fit().ifPresent(fit -> consumer.accept((R) this, fit));
     }
 
     /**
