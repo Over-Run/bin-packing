@@ -29,9 +29,7 @@ import org.overrun.binpacking.PackerFitPos;
 import org.overrun.binpacking.PackerRegion;
 import org.overrun.binpacking.PackerRegionSize;
 
-import java.util.Objects;
 import java.util.Optional;
-import java.util.StringJoiner;
 
 /**
  * The {@link PackerRegion} with a delegated {@link PackerRegionSize}.
@@ -81,25 +79,19 @@ public final class DelegateRegion<T> implements PackerRegion<T> {
         return userdata;
     }
 
+    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        DelegateRegion<?> that = (DelegateRegion<?>) o;
-        return size.width() == that.width() && size.height() == that.height() && Objects.equals(fit, that.fit);
+        return regionEquals(o);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(size.width(), size.height(), fit);
+        return regionHashCode();
     }
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", DelegateRegion.class.getSimpleName() + "[", "]")
-            .add("width=" + size.width())
-            .add("height=" + size.height())
-            .add("fit=" + fit)
-            .toString();
+        return regionToString(DelegateRegion.class.getSimpleName());
     }
 }

@@ -12,14 +12,6 @@
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
  */
 
 package org.overrun.binpacking;
@@ -29,7 +21,9 @@ import org.jetbrains.annotations.Nullable;
 import org.overrun.binpacking.internal.DelegateRegion;
 import org.overrun.binpacking.internal.SizedRegion;
 
+import java.util.Objects;
 import java.util.Optional;
+import java.util.StringJoiner;
 import java.util.function.BiConsumer;
 
 /**
@@ -107,7 +101,46 @@ public interface PackerRegion<T> extends PackerRegionSize, Comparable<PackerRegi
     default int compareTo(@NotNull PackerRegion o) {
         if (o.height() < height()) return -1;
         if (o.height() > height()) return 1;
-        // height implicitly equal
+        // heights implicitly equal
         return Integer.compare(o.width(), width());
+    }
+
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     *
+     * @param o the reference object with which to compare.
+     * @return {@code true} if this object is the same as the obj argument; {@code false} otherwise.
+     * @see Object#equals(Object)
+     */
+    default boolean regionEquals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        var that = (PackerRegion<?>) o;
+        return width() == that.width() && height() == that.height() && Objects.equals(fit(), that.fit());
+    }
+
+    /**
+     * Returns a hash code value for the object.
+     *
+     * @return a hash code value for this object.
+     * @see Object#hashCode()
+     */
+    default int regionHashCode() {
+        return Objects.hash(width(), height(), fit());
+    }
+
+    /**
+     * Returns a string representation of the object.
+     *
+     * @param className the class name of the object.
+     * @return a string representation of the object.
+     * @see Object#toString()
+     */
+    default String regionToString(String className) {
+        return new StringJoiner(", ", className + "[", "]")
+            .add("width=" + width())
+            .add("height=" + height())
+            .add("fit=" + fit())
+            .toString();
     }
 }

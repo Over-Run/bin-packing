@@ -8,6 +8,6 @@ Import as Gradle dependency:
 
 ```groovy
 dependencies {
-    implementation 'io.github.over-run:bin-packing:0.2.0'
+    implementation 'io.github.over-run:bin-packing:0.3.0'
 }
 ```

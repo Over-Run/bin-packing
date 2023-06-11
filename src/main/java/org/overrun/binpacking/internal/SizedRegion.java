@@ -28,9 +28,7 @@ import org.jetbrains.annotations.Nullable;
 import org.overrun.binpacking.PackerFitPos;
 import org.overrun.binpacking.PackerRegion;
 
-import java.util.Objects;
 import java.util.Optional;
-import java.util.StringJoiner;
 
 /**
  * The default implementation of {@link PackerRegion}.
@@ -84,25 +82,19 @@ public final class SizedRegion implements PackerRegion<Object> {
         return null;
     }
 
+    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        SizedRegion that = (SizedRegion) o;
-        return width == that.width && height == that.height && Objects.equals(fit, that.fit);
+        return regionEquals(o);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(width, height, fit);
+        return regionHashCode();
     }
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", SizedRegion.class.getSimpleName() + "[", "]")
-            .add("width=" + width)
-            .add("height=" + height)
-            .add("fit=" + fit)
-            .toString();
+        return regionToString(SizedRegion.class.getSimpleName());
     }
 }

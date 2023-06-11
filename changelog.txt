@@ -1,5 +1,8 @@
+0.3.0
+Added: PackerRegion now provides a default implementation of ::equals, ::hashCode and ::toString
+
 0.2.0
-Changed: Packer::sort and ::fit now support to children type for generic
+Changed: Packer::sort and ::fit: now support to children type for generic
 
 0.1.0
 Added: Packer, FixedPacker, GrowingPacker
