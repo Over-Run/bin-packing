@@ -1,3 +1,6 @@
+0.5.0
+Changed: require static org.jetbrains.annotations
+
 0.4.0
 Changed: PackerRegion::ifFitPresent now requires an exact type
 

@@ -8,5 +8,5 @@
  */
 module org.overrun.binpacking {
     exports org.overrun.binpacking;
-    requires org.jetbrains.annotations;
+    requires static org.jetbrains.annotations;
 }
